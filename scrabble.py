@@ -10,6 +10,7 @@ def read():
     return content
 
 # ~~~~~ GET LETTERS ~~~~~ #
+
 def input():
     LetterPattern = re.compile('[a-z_]')
 
@@ -21,18 +22,22 @@ def input():
     valid = 0
     while valid == 0:
 	input = raw_input("Enter Letters Here: ").lower()
+	print('')
         letters = re.findall(LetterPattern, input)
-       
-        if len(''.join(letters))>8:
-            print("You entered more than 8 letters. Please re-enter your letters")
-        elif len(''.join(letters))<7:
-            ans = raw_input("\n You entered fewer than 7 letters. Press \"y\" to confirm that this is correct, and \"n\" to try again. ")
-	    if ans == 'y':
+
+        if letters.count("_") > 1:
+            print("I'm sorry, I haven't figure out how to handle more than one blank space")
+        else:    
+            if len(''.join(letters))>8:
+                print("You entered more than 8 letters. Please re-enter your letters")
+            elif len(''.join(letters))<7:
+                ans = raw_input("\n You entered fewer than 7 letters. Press \"y\" to confirm that this is correct, and \"n\" to try again. ")
+	        if ans == 'y':
+                    valid = 1
+                    return letters
+            else:
                 valid = 1
                 return letters
-        else:
-            valid = 1
-            return letters
 
 
 # ~~~~~ FIND VALUE OF WORD ~~~~~ #
@@ -45,6 +50,24 @@ def value(letters):
     return sum
 
 
+# ~~~~~ FIND WORDS FROM A LIST OF LETTERS ~~~~ #
+
+def words(letters):
+    length = 2
+    while length <= len(letters):
+        for i in list(itertools.permutations(letters, length)):
+            if content.count(''.join(i)) == 1:
+  		results[''.join(i)]=value(i)            
+        length += 1
+
+
+
+# --- OH NO AN UNDERSCORE!!! --- #
+
+def underscore(letters):
+    for ltr in range(97,123):
+        words(letters.replace("_",chr(ltr)))
+
 # ~~~~~~ MAIN PROGRAM ~~~~~ #
 
 content = read()
@@ -52,20 +75,15 @@ content = read()
 print("Welcome to my program")
 
 letters = input()
+results = {}
 
-length = 2
-while length <= 4:
-    for i in list(itertools.permutations(letters, length)):
-        if content.count(''.join(i)) == 1:
-            print("The word %s is worth %d points" % (''.join(i), value(i)))
-    length += 1
+underscore(''.join(letters))
 
 
+print('  WORD \t|  POINTS  ')
+print('-------------------')
+for key, value in sorted(results.items()):
+	print(str(key) + "\t|  " + str(value))
 
-#word = input.lower()
-#print(word)
-#print(word.isalpha())
 
-# if content.count(word) = 0, not a word
-# if content.counr(word) = 1, is a word
-#print(content.count(word))
+
