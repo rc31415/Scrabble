@@ -1,5 +1,6 @@
 import re
 import itertools
+import os
 
 # ~~~~~~ READ FILE ~~~~~ #
 
@@ -22,7 +23,6 @@ def input():
     valid = 0
     while valid == 0:
 	input = raw_input("Enter Letters Here: ").lower()
-	print('')
         letters = re.findall(LetterPattern, input)
 
         if letters.count("_") > 1:
@@ -71,19 +71,21 @@ def underscore(letters):
 # ~~~~~~ MAIN PROGRAM ~~~~~ #
 
 content = read()
-
-print("Welcome to my program")
+os.system('clear')
+print("Welcome to my program! \n")
 
 letters = input()
 results = {}
 
 underscore(''.join(letters))
 
-
+print('')
 print('  WORD \t|  POINTS  ')
 print('-------------------')
 for key, value in sorted(results.items()):
 	print(str(key) + "\t|  " + str(value))
 
+print('')    
+raw_input('Press any key to exit')
 
 
